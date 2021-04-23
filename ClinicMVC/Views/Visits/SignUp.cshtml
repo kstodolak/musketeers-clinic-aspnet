@@ -1,0 +1,95 @@
+﻿@model Clinic.Entities.Models.Visit
+@{
+    ViewBag.Title = "Umów się";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/Content/jquery-ui-css")
+@Styles.Render("~/Content/css")
+
+<div id="doctorInfo">
+    @Html.Action("SignUpDoctorInfo", new { id = Model.DoctorId })
+</div>
+
+
+@using (Ajax.BeginForm("SignUp", "Visits", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onCreateSuccess" }))
+{
+
+    <div class="form-horizontal">
+
+        <input type="hidden" value="@Model.DoctorId" id="DoctorId" name="DoctorId" />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", @id="DatePicker" } })*@
+                <input class="custom-datepicker" type="text" id="Date" name="Date" readonly="readonly" value="@Model.Date.ToString("yyyy-MM-dd")" />
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group" id="hoursSelect-wrapper">
+            @Html.Action("ConstructHoursList", "Visits", new { doctorId = Model.DoctorId, date = Model.Date })
+        </div>
+
+        @*<div class="form-group">
+                @Html.Label("Godzina", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Hour", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Umów wizytę" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryUi")
+
+    <script type="text/javascript">
+
+        const today = new Date();
+        const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+        const yearAhead = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
+
+
+        $("#Date").datepicker({
+            minDate: tomorrow,
+            maxDate: yearAhead,
+            monthNames: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+            monthNamesShort: ["St", "Lut", "Mrz", "Kw", "Maj", "Cz", "Lip", "Sier", "Wrz", "Paź", "Lis", "Gr"],
+            dayNamesMin: ["Ndz", "Pon", "Wt", "Śr", "Czw", "Pt", "Sob"],
+            dateFormat: 'yy-mm-dd' 
+        });
+
+        var onCreateSuccess = function (resp) {
+            alert(resp.info);
+            window.location.href ="/Visits/GetVisitList";
+        }
+
+        $("#Date").on("change", (e) => {
+            const doctorId = $("#DoctorId").val();
+            console.log('Zmiana daty - przeładowanie')
+            $.ajax({
+                url: "/Visits/ConstructHoursList",
+                datatype: "text",
+                type: "GET",
+                data: {
+                    doctorId: doctorId,
+                    date: e.target.value
+                },
+                success: function (data) {
+                    console.log("Przeładowano:");
+                    console.log(data);
+                    $('#hoursSelect-wrapper').html(data);
+                },
+            });
+        });
+
+    </script>
+}

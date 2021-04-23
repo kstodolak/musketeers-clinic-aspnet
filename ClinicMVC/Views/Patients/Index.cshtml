@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Clinic.Entities.Models.Patient>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lista pacjentów</h2>
+    @Html.ActionLink("Stwórz nowe", "Create", null, new { @class = "btn btn-success" })
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Surname)
+        </th>        
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>        
+        <th>
+            @Html.DisplayNameFor(model => model.Adress)
+        </th>        
+        <th>
+            @Html.DisplayNameFor(model => model.PostCode)
+        </th>    
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>      
+        <th>
+            @Html.DisplayNameFor(model => model.AccountId)
+        </th>        
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>           
+            <td>
+                @Html.DisplayFor(modelItem => item.Adress)
+            </td>           
+            <td>
+                @Html.DisplayFor(modelItem => item.PostCode)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>      
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountId)
+            </td>           
+            <td>
+                @Html.ActionLink("Edytuj", "Edit", new { accountId = item.AccountId }, new { @class = "btn btn-primary" }) |
+                @*@Html.ActionLink("Szczegóły", "Details", new { accountId = item.AccountId }, new { @class = "btn btn-primary" }) |*@
+                @Html.ActionLink("Usuń", "Delete", new { accountId = item.AccountId }, new { @class="btn btn-danger"})
+            </td>
+        </tr>
+    }
+
+</table>

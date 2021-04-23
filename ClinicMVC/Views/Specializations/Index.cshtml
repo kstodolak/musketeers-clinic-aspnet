@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Clinic.Entities.Models.Specialization>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Specjalizacje</h2>
+
+<p>
+    @Html.ActionLink("Dodaj specjalizacje", "Create", null, new {@class="btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+            @*@Html.ActionLink("Szczegóły", "Details", new { id = item.Id }, new { @class = "btn btn-primary" }) |*@
+            @Html.ActionLink("Usuń", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>

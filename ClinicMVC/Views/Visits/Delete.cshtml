@@ -1,0 +1,54 @@
+﻿@model Clinic.Entities.Models.Visit
+
+@{
+    ViewBag.Title = "Anuluj wizytę";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Czy na pewno chcesz odwołać wizytę?</h2>
+<div>
+    <h4>Wizyta:</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Doctor.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Doctor.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Doctor.Surname)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Doctor.Surname)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Doctor.ConsultingRoom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Doctor.ConsultingRoom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Hour)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Hour)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+<div class="form-actions no-color">
+    @Html.ActionLink("Wróć do listy", "Index", null, new { @class = "btn btn-info" }) |
+    <input type="submit" value="Tak, odwołuję wizytę" class="btn btn-danger" />
+</div>
+    }
+</div>

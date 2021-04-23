@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Clinic.Entities.Models.Specialization>
+
+@{
+    ViewBag.Title = "Wybierz lekarza";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Umów się</h2>
+
+@*<div id="specializationList">
+    @Html.Action("GetSpecializationList")
+</div>*@
+
+<table class="table specializations-table">
+    <tr>
+        <th>
+            Jakiego lekarza szukasz?
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @*@{Html.RenderAction("doctorsListBySpecialization", new { id = item.Id });}*@
+                @*@Html.ActionLink("Wybierz", "Edit", new { id = item.Id })*@
+                @Ajax.ActionLink("Wybierz", "GetDoctorsBySpecialization", "Visits", new { specializationId = item.Id }, new AjaxOptions { HttpMethod = "GET", OnSuccess = "getDoctorsOnSuccess" },new {@class="btn btn-primary" })
+                @*<a href="@Url.Action("doctorsList", "Visits", new { id = item.Id})">item.Name</a>*@
+            </td>
+        </tr>
+    }
+</table>
+
+<h3>Lekarze</h3>
+<div id="doctors-wrapper">
+    <p>Wybierz specjalizację.</p>
+</div>
+
+
+<div>
+    @Html.ActionLink("Lista wizyt", "GetVisitList",null, new {@class="btn btn-primary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function getDoctorsOnSuccess(data)
+        {           
+            const wrapper = $("#doctors-wrapper");
+            if (wrapper) $(wrapper).html(data);
+        }
+    </script>
+}

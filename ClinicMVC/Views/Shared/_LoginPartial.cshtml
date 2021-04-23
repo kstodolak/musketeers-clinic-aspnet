@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            @if (!ViewContext.HttpContext.User.IsInRole("admin"))
+            {
+                <li> @Html.ActionLink("Moje wizyty", "GetVisitList", "Visits", null, null) </li>
+            }
+            else
+            {
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Zarządzaj<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Lekarze", "Index", "Doctors")</li>
+                        <li>@Html.ActionLink("Specjalizacje", "Index", "Specializations")</li>
+                        <li>@Html.ActionLink("Pacjenci", "Index", "Patients")</li>
+                        <li>@Html.ActionLink("Wizyty", "Index", "Visits")</li>
+                    </ul>
+                </li>
+            }
+            <li> @Html.ActionLink("Witaj, " + User.Identity.GetUserName() + "!", "Edit", "Patients", new { accountId = User.Identity.GetUserId() }, htmlAttributes: null)</li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Zarejestruj", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Zaloguj", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

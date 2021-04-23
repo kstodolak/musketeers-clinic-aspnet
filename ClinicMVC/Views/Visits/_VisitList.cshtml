@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Clinic.Entities.Models.Visit>
+
+@{
+    ViewBag.Title = "Moje wizyty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Twoje wizyty</h2>
+
+<p>
+    @Html.ActionLink("Umów nową wizytę", "Create", null, new {@class="btn btn-success" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Lekarz
+        </th>
+        <th>
+            Gabinet
+        </th>
+        <th>
+            Dzień
+        </th>
+        <th>
+            Godzina
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.Name)
+                @Html.DisplayFor(modelItem => item.Doctor.Surname) -
+                @Html.DisplayFor(modelItem => item.Doctor.Specialization.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.ConsultingRoom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hour)
+            </td>
+            <td>
+                @Html.ActionLink("Odwołaj wizytę", "Delete", new { id = item.Id }, new {@class="btn btn-danger" })
+            </td>
+        </tr>
+    }
+    @if (!Model.Any())
+    {
+        <tr>
+            <td colspan="5">
+                Brak umówionych wizyt.
+            </td>
+        </tr>
+    }
+
+</table>
